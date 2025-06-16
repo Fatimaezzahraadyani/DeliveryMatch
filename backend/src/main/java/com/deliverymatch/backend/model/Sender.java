@@ -7,4 +7,5 @@ import jakarta.persistence.Table;
 @Table(name = "Senders")
 public class Sender extends User{
 
+
 }

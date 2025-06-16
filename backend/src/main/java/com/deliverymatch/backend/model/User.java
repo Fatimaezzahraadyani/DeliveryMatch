@@ -1,10 +1,11 @@
 package com.deliverymatch.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
@@ -21,10 +22,8 @@ public abstract class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {}
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public int getId() {
         return id;
@@ -50,6 +49,14 @@ public abstract class User {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -58,5 +65,11 @@ public abstract class User {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

@@ -8,8 +8,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record RegisterDTO(
-        @NotBlank(message = "full name is required")
-        String fullName,
+        @NotBlank(message = "firstname is required")
+        String firstName,
+
+        @NotBlank(message = "lastName is required")
+        String lastName,
 
         @NotBlank(message = "email is required")
         @Email(message = "please enter a valid email")
