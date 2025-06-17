@@ -1,5 +1,6 @@
 package com.deliverymatch.backend.services;
 
+import com.deliverymatch.backend.dto.CreateUserDto;
 import com.deliverymatch.backend.dto.RegisterDTO;
 import com.deliverymatch.backend.dto.UserDTO;
 import com.deliverymatch.backend.model.*;
@@ -94,5 +95,45 @@ public class UserServices {
         return Stream.concat(Stream.concat(admins.stream(), drivers.stream()), senders.stream())
                 .toList();
 
+    }
+
+    public ResponseEntity<?> createUserByAdmin(CreateUserDto dto) {
+        try{
+            User user;
+            String encryptedPassword = encoder.encode(dto.password());
+            switch (dto.role()) {
+                case ADMIN -> {
+                    Admin admin = new Admin();
+                    admin.setFirstName(dto.firstName());
+                    admin.setLastName(dto.lastName());
+                    admin.setEmail(dto.email());
+                    admin.setPassword(encryptedPassword);
+                    user = adminRepository.save(admin);
+                }
+                case DRIVER -> {
+                    Driver driver = new Driver();
+                    driver.setFirstName(dto.firstName());
+                    driver.setLastName(dto.lastName());
+                    driver.setEmail(dto.email());
+                    driver.setPassword(encryptedPassword);
+                    user = driverRepository.save(driver);
+
+                }
+                case SENDER -> {
+                    Sender sender = new Sender();
+                    sender.setFirstName(dto.firstName());
+                    sender.setLastName(dto.lastName());
+                    sender.setEmail(dto.email());
+                    sender.setPassword(encryptedPassword);
+                    user = senderRepository.save(sender);
+                }
+                default -> throw new IllegalArgumentException("Role not supported.");
+            }
+
+            return ResponseEntity.ok("Utilisateur bien ajouté " + user.getFirstName() + " " + user.getEmail());
+
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 }

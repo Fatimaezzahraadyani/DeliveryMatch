@@ -1,12 +1,13 @@
 package com.deliverymatch.backend.controller;
 
 
+import com.deliverymatch.backend.dto.CreateUserDto;
 import com.deliverymatch.backend.dto.UserDTO;
 import com.deliverymatch.backend.services.UserServices;
+import jakarta.validation.Valid;
 import org.apache.catalina.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +26,11 @@ public class AdminController {
     public List<UserDTO> getAllUsers() {
         return userServices.getAllUsers();
     }
+
+    @PostMapping("/dashboard/users/create")
+    public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserDto dto) {
+        return userServices.createUserByAdmin(dto);
+    }
+
+
 }
