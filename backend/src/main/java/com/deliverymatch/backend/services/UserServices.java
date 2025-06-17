@@ -1,36 +1,74 @@
 package com.deliverymatch.backend.services;
 
-
 import com.deliverymatch.backend.dto.RegisterDTO;
-import com.deliverymatch.backend.model.User;
-import com.deliverymatch.backend.repository.UserRepository;
+import com.deliverymatch.backend.model.*;
+import com.deliverymatch.backend.repository.AdminRepository;
+import com.deliverymatch.backend.repository.DriverRepository;
+import com.deliverymatch.backend.repository.SenderRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServices {
 
-    private final UserRepository userRepository;
-    private final UserServices userServices;
+    private final AdminRepository adminRepository;
+    private final DriverRepository driverRepository;
+    private final SenderRepository senderRepository;
 
-    public UserServices(UserRepository userRepository, UserServices userServices) {
-        this.userRepository = userRepository;
-        this.userServices = userServices;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public UserServices(AdminRepository adminRepository,
+                        DriverRepository driverRepository,
+                        SenderRepository senderRepository) {
+        this.adminRepository = adminRepository;
+        this.driverRepository = driverRepository;
+        this.senderRepository = senderRepository;
+    }
+    public ResponseEntity<?> register(RegisterDTO dto) {
+        try {
+            User user = registerUser(dto);
+            return ResponseEntity.ok("Utilisateur enregistré avec succès : " + user.getEmail());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erreur lors de l'enregistrement");
+        }
     }
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    public User registerUser(RegisterDTO dto) {
+        User newUser;
 
-    public User registerUser (RegisterDTO registerDTO ) {
-        User newUser = new User();
+        String encryptedPassword = encoder.encode(dto.password());
 
-        String encryptedPassword = encoder.encode( registerDTO.password() );
+        switch (dto.role()) {
+            case ADMIN -> {
+                Admin admin = new Admin();
+                admin.setFirstName(dto.firstName());
+                admin.setLastName(dto.lastName());
+                admin.setEmail(dto.email());
+                admin.setPassword(encryptedPassword);
+                newUser = adminRepository.save(admin);
+            }
+            case DRIVER -> {
+                Driver driver = new Driver();
+                driver.setFirstName(dto.firstName());
+                driver.setLastName(dto.lastName());
+                driver.setEmail(dto.email());
+                driver.setPassword(encryptedPassword);
+                newUser = driverRepository.save(driver);
+            }
+            case SENDER -> {
+                Sender sender = new Sender();
+                sender.setFirstName(dto.firstName());
+                sender.setLastName(dto.lastName());
+                sender.setEmail(dto.email());
+                sender.setPassword(encryptedPassword);
+                newUser = senderRepository.save(sender);
+            }
+            default -> throw new IllegalArgumentException("Rôle non supporté : " + dto.role());
+        }
 
-        newUser.setFirstName(registerDTO.firstName());
-        newUser.setLastName(registerDTO.lastName());
-        newUser.setEmail(registerDTO.email());
-        newUser.setPassword( encryptedPassword );
-
-        return userRepository.save(newUser);
+        return newUser;
     }
-
 }

@@ -2,6 +2,7 @@ package com.deliverymatch.backend.controller;
 
 
 import com.deliverymatch.backend.dto.LoginDTO;
+import com.deliverymatch.backend.dto.RegisterDTO;
 import com.deliverymatch.backend.model.User;
 import com.deliverymatch.backend.services.UserServices;
 import jakarta.validation.Valid;
@@ -21,17 +22,11 @@ public class AuthController {
         this.userService = userServices;
     }
 
-    @PostMapping("register")
-
-    public ResponseEntity<?> loginUser (@Valid @RequestBody LoginDTO loginDTO) {
-        User user = new User();
-
-        user.setEmail(loginDTO.email());
-        user.setPassword(loginDTO.password());
-
-        return userService.verify(user);
-
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
+        return userService.register(registerDTO);
     }
+
 
     @PostMapping("/login")
     public User login(@RequestBody User user) {

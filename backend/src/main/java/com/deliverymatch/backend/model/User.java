@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id;
+    private long id;
 
     @Column(name = "fisrtName", nullable = false)
     private String firstName;
@@ -25,11 +25,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
