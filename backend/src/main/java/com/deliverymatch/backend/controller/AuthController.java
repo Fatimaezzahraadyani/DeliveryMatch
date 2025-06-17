@@ -1,9 +1,12 @@
 package com.deliverymatch.backend.controller;
 
 
+import com.deliverymatch.backend.dto.AuthRequest;
+import com.deliverymatch.backend.dto.AuthResponse;
 import com.deliverymatch.backend.dto.LoginDTO;
 import com.deliverymatch.backend.dto.RegisterDTO;
 import com.deliverymatch.backend.model.User;
+import com.deliverymatch.backend.services.AuthService;
 import com.deliverymatch.backend.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AuthController {
     private final UserServices userService;
+    private final AuthService authService;
 
-    public AuthController(UserServices userServices) {
+    public AuthController(UserServices userServices, AuthService authService) {
         this.userService = userServices;
+        this.authService = authService;
     }
 
     @PostMapping("/register")
@@ -29,9 +34,10 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
 
-        return null;
+        String jwt = authService.login(request);
+        return ResponseEntity.ok(new AuthResponse(jwt));
     }
 
 

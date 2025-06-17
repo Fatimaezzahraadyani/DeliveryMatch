@@ -1,6 +1,7 @@
 package com.deliverymatch.backend.services;
 
 import com.deliverymatch.backend.dto.RegisterDTO;
+import com.deliverymatch.backend.dto.UserDTO;
 import com.deliverymatch.backend.model.*;
 import com.deliverymatch.backend.repository.AdminRepository;
 import com.deliverymatch.backend.repository.DriverRepository;
@@ -8,6 +9,10 @@ import com.deliverymatch.backend.repository.SenderRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class UserServices {
@@ -70,5 +75,24 @@ public class UserServices {
         }
 
         return newUser;
+    }
+
+    public List<UserDTO> getAllUsers (){
+        List<UserDTO> admins = adminRepository.findAll().stream()
+                .map(a-> new UserDTO(a.getId(), a.getFirstName(), a.getLastName(), a.getEmail(), "ADMIN" ))
+                .toList();
+
+        List<UserDTO> senders = senderRepository.findAll().stream()
+                .map(sender -> new UserDTO(sender.getId(), sender.getFirstName(), sender.getLastName(), sender.getEmail(), "SENDER"))
+                .toList();
+
+        List<UserDTO> drivers = driverRepository.findAll().stream()
+                .map(driver -> new UserDTO(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getEmail(),"DRIVER"))
+                .toList();
+
+
+        return Stream.concat(Stream.concat(admins.stream(), drivers.stream()), senders.stream())
+                .toList();
+
     }
 }
