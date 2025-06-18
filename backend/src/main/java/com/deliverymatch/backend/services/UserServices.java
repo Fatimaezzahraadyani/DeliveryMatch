@@ -58,6 +58,7 @@ public class UserServices {
                 admin.setLastName(dto.lastName());
                 admin.setEmail(dto.email());
                 admin.setPassword(encryptedPassword);
+                admin.setRole(Role.ADMIN);
                 newUser = adminRepository.save(admin);
             }
             case DRIVER -> {
@@ -66,6 +67,7 @@ public class UserServices {
                 driver.setLastName(dto.lastName());
                 driver.setEmail(dto.email());
                 driver.setPassword(encryptedPassword);
+                driver.setRole(Role.DRIVER);
                 newUser = driverRepository.save(driver);
             }
             case SENDER -> {
@@ -74,6 +76,7 @@ public class UserServices {
                 sender.setLastName(dto.lastName());
                 sender.setEmail(dto.email());
                 sender.setPassword(encryptedPassword);
+                sender.setRole(Role.SENDER);
                 newUser = senderRepository.save(sender);
             }
             default -> throw new IllegalArgumentException("Rôle non supporté : " + dto.role());

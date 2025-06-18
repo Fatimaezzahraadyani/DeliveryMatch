@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("(/api/driver/trajets)")
+@RequestMapping("/api/driver/trajets")
 public class DriverController {
     private final DriverService driverService;
     private final TrajetService trajetService;
@@ -24,7 +24,6 @@ public class DriverController {
     }
     @GetMapping
     public ResponseEntity<List<Trajet>> getAllTrajets() {
-       // System.out.println("dhgddjy");
         return ResponseEntity.ok(trajetService.getAllTrajets());
     }
 

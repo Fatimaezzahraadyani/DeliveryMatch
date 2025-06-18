@@ -16,10 +16,15 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        System.out.println("Authority: " + "ROLE_" + user.getRole().name());
+
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+
     }
+
 
     @Override
     public String getPassword() {
@@ -55,4 +60,5 @@ public class CustomUserDetails implements UserDetails {
     public User getUser(){
         return user;
     }
+
 }

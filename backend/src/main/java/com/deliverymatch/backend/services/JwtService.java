@@ -32,9 +32,16 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String getSecretKey(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+
+        if (userDetails instanceof com.deliverymatch.backend.security.CustomUserDetails customUser) {
+            claims.put("role", customUser.getUser().getRole().name()); // ajoute le rôle
+        }
+
+        return generateToken(claims, userDetails);
     }
+
 
     public String generateToken(
             Map<String, Object> extraClaims,

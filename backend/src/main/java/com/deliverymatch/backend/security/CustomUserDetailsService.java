@@ -50,7 +50,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Utilisateur non trouvé avec l'email : " + email);
         }
 
+        System.out.println("ROLE from DB: " + user.getRole());
+
         return new CustomUserDetails(user);
+
     }
 
 //    @Override

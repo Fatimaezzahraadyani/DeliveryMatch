@@ -34,7 +34,51 @@ public class Demandes {
     private Trajet trajet;
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Date getDateDemande() {
+        return dateDemande;
+    }
 
+    public void setDateDemande(Date dateDemande) {
+        this.dateDemande = dateDemande;
+    }
+
+    public String getSizeAvaileble() {
+        return sizeAvaileble;
+    }
+
+    public void setSizeAvaileble(String sizeAvaileble) {
+        this.sizeAvaileble = sizeAvaileble;
+    }
+
+    public StatutDemende getStatutDemande() {
+        return statutDemande;
+    }
+
+    public void setStatutDemande(StatutDemende statutDemande) {
+        this.statutDemande = statutDemande;
+    }
+
+    public Sender getSender() {
+        return sender;
+    }
+
+    public void setSender(Sender sender) {
+        this.sender = sender;
+    }
+
+    public Trajet getTrajet() {
+        return trajet;
+    }
+
+    public void setTrajet(Trajet trajet) {
+        this.trajet = trajet;
+    }
 }

@@ -41,7 +41,7 @@ public class TrajetService {
         trajet.setStartDate(trajetDTO.StartDate());
         trajet.setDatePublication(new Date());
         trajet.setSizeMax(trajetDTO.SizeMax());
-        trajet.setAvailebleCapacity(trajetDTO.AvailebleCapacity());
+        trajet.setTypeMarchandise(trajetDTO.TypeMarchandise());
         trajet.setDriver(driver);
 
         return trajetRepository.save(trajet);
