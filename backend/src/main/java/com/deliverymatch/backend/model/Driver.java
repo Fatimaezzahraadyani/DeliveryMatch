@@ -6,4 +6,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Drivers")
 public class Driver extends User{
+
+
 }

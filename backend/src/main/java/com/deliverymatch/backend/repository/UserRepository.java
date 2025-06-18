@@ -5,8 +5,10 @@ import com.deliverymatch.backend.model.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     public User findUserByEmail(String email);
+
+    public User deleteUserById(Long id);
 
 }

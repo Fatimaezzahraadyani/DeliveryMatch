@@ -2,11 +2,13 @@ package com.deliverymatch.backend.services;
 
 import com.deliverymatch.backend.dto.CreateUserDto;
 import com.deliverymatch.backend.dto.RegisterDTO;
+import com.deliverymatch.backend.dto.UpdateUserDto;
 import com.deliverymatch.backend.dto.UserDTO;
 import com.deliverymatch.backend.model.*;
 import com.deliverymatch.backend.repository.AdminRepository;
 import com.deliverymatch.backend.repository.DriverRepository;
 import com.deliverymatch.backend.repository.SenderRepository;
+import com.deliverymatch.backend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,15 @@ public class UserServices {
     private final SenderRepository senderRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private final UserRepository userRepository;
 
     public UserServices(AdminRepository adminRepository,
                         DriverRepository driverRepository,
-                        SenderRepository senderRepository) {
+                        SenderRepository senderRepository, UserRepository userRepository) {
         this.adminRepository = adminRepository;
         this.driverRepository = driverRepository;
         this.senderRepository = senderRepository;
+        this.userRepository = userRepository;
     }
     public ResponseEntity<?> register(RegisterDTO dto) {
         try {
@@ -135,5 +139,23 @@ public class UserServices {
         }catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
+    }
+
+    public User UpdateUser(Long id,UpdateUserDto dto) {
+        User ExistingUser = userRepository.findById(id).orElseThrow(()->new RuntimeException("user intouvable"));
+
+        ExistingUser.setFirstName(dto.firstName());
+        ExistingUser.setLastName(dto.lastName());
+        ExistingUser.setEmail(dto.email());
+        if(dto.password() != null && !dto.password().isEmpty()){
+            ExistingUser.setPassword(encoder.encode(dto.password()));
+        }
+        ExistingUser.setRole(dto.role());
+
+        return userRepository.save(ExistingUser);
+    }
+
+    public void deleteUser(Long id){
+        userRepository.deleteById(id);
     }
 }
