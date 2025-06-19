@@ -161,4 +161,11 @@ public class UserServices {
     public void deleteUser(Long id){
         userRepository.deleteById(id);
     }
+
+    public Long getSenderIdByEmail(String email) {
+        Sender sender = senderRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        return sender.getId();
+    }
+
 }

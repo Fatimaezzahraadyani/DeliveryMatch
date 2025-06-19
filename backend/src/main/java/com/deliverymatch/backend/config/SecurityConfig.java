@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/register").permitAll()
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/api/admin/**").permitAll()
-                        //.requestMatchers("/api/sender/**").hasRole("SENDER")
+                        .requestMatchers("/api/sender/**").hasRole("SENDER")
                         .requestMatchers("/api/driver/**").hasRole("DRIVER")
                         //.requestMatchers("/api/driver/**").permitAll()
                         .anyRequest().authenticated()

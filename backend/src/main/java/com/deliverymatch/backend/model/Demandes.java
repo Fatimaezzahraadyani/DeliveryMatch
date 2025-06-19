@@ -3,6 +3,7 @@ package com.deliverymatch.backend.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -19,12 +20,13 @@ public class Demandes {
     private String sizeAvaileble;
 
 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatutDemende statutDemande;
+    private StatutDemande statutDemande;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
     private Sender  sender;
 
@@ -32,6 +34,12 @@ public class Demandes {
     @ManyToOne
     @JoinColumn(name = "trajet_id")
     private Trajet trajet;
+
+
+    // Liste des colis à transporter pour cette demande
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "colis_id")
+    private List<Colis> colis;
 
 
     public Long getId() {
@@ -58,11 +66,11 @@ public class Demandes {
         this.sizeAvaileble = sizeAvaileble;
     }
 
-    public StatutDemende getStatutDemande() {
+    public StatutDemande getStatutDemande() {
         return statutDemande;
     }
 
-    public void setStatutDemande(StatutDemende statutDemande) {
+    public void setStatutDemande(StatutDemande statutDemande) {
         this.statutDemande = statutDemande;
     }
 
@@ -80,5 +88,13 @@ public class Demandes {
 
     public void setTrajet(Trajet trajet) {
         this.trajet = trajet;
+    }
+
+    public List<Colis> getColis() {
+        return colis;
+    }
+
+    public void setColis(List<Colis> colis) {
+        this.colis = colis;
     }
 }

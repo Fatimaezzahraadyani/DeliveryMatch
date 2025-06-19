@@ -1,7 +1,8 @@
 package com.deliverymatch.backend.model;
 
-public enum StatutDemende {
+public enum StatutDemande {
     ACCEPTED,
     WAITING,
+    OK,
     DECLINED;
 }
