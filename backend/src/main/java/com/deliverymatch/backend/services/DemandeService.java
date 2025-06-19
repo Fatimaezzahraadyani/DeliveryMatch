@@ -117,6 +117,24 @@ public class DemandeService {
         )).toList();
     }
 
+    public List<DemandeDTO> getDemandesByDriverId(Long driverId) {
+        List<Demandes> demandes = demandeRepository.findDemandesByDriverId(driverId);
+
+        return demandes.stream().map(demande -> new DemandeDTO(
+                demande.getSender().getId(),
+                demande.getTrajet().getId(),
+                demande.getSizeAvaileble(),
+                demande.getStatutDemande(),
+                demande.getColis().stream().map(colis -> new ColisDTO(
+                        colis.getSize(),
+                        colis.getType(),
+                        colis.getWeight()
+                )).toList()
+
+        )).toList();
+
+    }
+
 
 
 
