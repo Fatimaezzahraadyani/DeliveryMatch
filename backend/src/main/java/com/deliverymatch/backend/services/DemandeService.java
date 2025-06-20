@@ -3,10 +3,7 @@ package com.deliverymatch.backend.services;
 import com.deliverymatch.backend.dto.ColisDTO;
 import com.deliverymatch.backend.dto.DemandeDTO;
 import com.deliverymatch.backend.dto.DemandeResponseDTO;
-import com.deliverymatch.backend.model.Colis;
-import com.deliverymatch.backend.model.Demandes;
-import com.deliverymatch.backend.model.Sender;
-import com.deliverymatch.backend.model.Trajet;
+import com.deliverymatch.backend.model.*;
 import com.deliverymatch.backend.repository.DemandeRepository;
 import com.deliverymatch.backend.repository.SenderRepository;
 import com.deliverymatch.backend.repository.TrajetRepository;
@@ -28,13 +25,15 @@ public class DemandeService {
     public final SenderRepository senderRepository;
     public final TrajetService trajetService;
     private final TrajetRepository trajetRepository;
+    private final DriverService driverService;
 
 
-    public DemandeService(SenderRepository senderRepository, TrajetService trajetService, DemandeRepository demandeRepository, TrajetRepository trajetRepository) {
+    public DemandeService(SenderRepository senderRepository, TrajetService trajetService, DemandeRepository demandeRepository, TrajetRepository trajetRepository, DriverService driverService) {
         this.senderRepository = senderRepository;
         this.trajetService = trajetService;
         this.demandeRepository = demandeRepository;
         this.trajetRepository = trajetRepository;
+        this.driverService = driverService;
     }
 
     public List<Demandes> getAllDemandesToAdmin() {
@@ -72,6 +71,36 @@ public class DemandeService {
 
         demandeRepository.save(demande);
         return ResponseEntity.ok().body("Demande created");
+    }
+
+    public ResponseEntity<?> UpdateDemande(DemandeDTO demandeDTO) {
+        Optional<Sender> SenderExist = senderRepository.findById(demandeDTO.senderId());
+        Optional<Trajet> TrajetExist = trajetRepository.findById(demandeDTO.trajetId());
+
+        if(SenderExist.isEmpty() || TrajetExist.isEmpty()) {
+            return ResponseEntity.badRequest().body("Sender id or trajet id not found");
+        }
+        Demandes demande = new Demandes();
+        demande.setDateDemande(new Date());
+        demande.setSender(SenderExist.get());
+        demande.setTrajet(TrajetExist.get());
+        demande.setStatutDemande(demandeDTO.statutDemande());
+        demande.setSizeAvaileble(demandeDTO.sizeAvaileble());
+        List<Colis> colisList = new ArrayList<>();
+        if (demandeDTO.colis() != null) {
+            for (ColisDTO c : demandeDTO.colis()) {
+                Colis colis = new Colis();
+                colis.setSize(c.Size());
+                colis.setType(c.Type());
+                colis.setWeight(c.weight());
+                colisList.add(colis);
+            }
+        }
+        demande.setColis(colisList);
+
+
+        demandeRepository.save(demande);
+        return ResponseEntity.ok().body("Demande updated");
     }
 
     public List<DemandeResponseDTO> getAllDemandesInfos() {
