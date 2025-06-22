@@ -19,15 +19,28 @@ export class LoginComponent {
   }
 
   onLogin(){
-    this.authService.login({ email : this.email, password : this.password}).subscribe(
-      {
-        next: res =>{
-          this.authService.saveToken(res.token);
-          this.router.navigate(["/"])
-        },
-        error: err => console.error(err)
+    this.authService.login({ email : this.email, password : this.password}).subscribe({
+
+      next: (res) => {
+        console.log('Réponse login:', res);
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('role', res.role); // Stocker le rôle
+
+        if (res.role === 'SENDER') {
+          this.router.navigate(['/app-SenderDashboard']);
+        } else if (res.role === 'DRIVER') {
+          this.router.navigate(['/driver/dashboard']);
+        } else if (res.role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      },
+      error: (err) => {
+        console.log('Erreur de login', err);
       }
-    );
+    });
+
   }
 
 }

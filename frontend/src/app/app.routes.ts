@@ -1,4 +1,9 @@
 import { Routes } from '@angular/router';
+import {HistoriqueComponent} from './pages/sender/historique/historique.component';
+import {DemandeFormComponent} from './pages/sender/demande-form/demande-form.component';
+import {AnnoncesComponent} from './pages/sender/annonces/annonces.component';
+import {DashboardComponent} from './pages/sender/dashboard/dashboard.component';
+
 
 export const routes: Routes = [
   {
@@ -12,10 +17,21 @@ export const routes: Routes = [
       import('./pages/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'sender',
-    loadChildren: () =>
-      import('./pages/sender/sender.module').then(m => m.SenderModule)
+    path: 'app-SenderDashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'annonces', pathMatch: 'full' },
+      { path: 'annonces', component: AnnoncesComponent },
+      { path: 'demande', component: DemandeFormComponent },
+      { path: 'historique', component: HistoriqueComponent },
+    ]
   },
+  {
+    path: 'annonces',
+    component: AnnoncesComponent
+  },
+
+
   {
     path: 'driver',
     loadChildren: () =>

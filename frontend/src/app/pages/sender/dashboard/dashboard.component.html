@@ -1,1 +1,16 @@
-<p>dashboard works!</p>
+<div class="flex h-screen bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg">
+    <div class="p-6 text-center border-b font-bold text-lg">Sender Dashboard</div>
+    <nav class="p-4 space-y-2">
+      <a routerLink="annonces" routerLinkActive="active-link" class="block px-4 py-2 rounded menu-link">📢 Annonces</a>
+      <a routerLink="demande" routerLinkActive="active-link" class="block px-4 py-2 rounded menu-link">📦 Nouvelle Demande</a>
+      <a routerLink="historique" routerLinkActive="active-link" class="block px-4 py-2 rounded menu-link">🕓 Historique</a>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="flex-1 p-6 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

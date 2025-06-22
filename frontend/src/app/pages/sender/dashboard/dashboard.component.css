@@ -1,0 +1,9 @@
+
+.active-link {
+  @apply bg-blue-100 text-blue-600 font-semibold;
+}
+
+/* Hover sur les liens du menu */
+.menu-link:hover {
+  @apply bg-gray-100 text-blue-500;
+}
