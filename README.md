@@ -42,9 +42,10 @@
 ## Diagrammes UMLs
 
 ### Diagramme de séquence
+![diagramme de sequence](https://github.com/user-attachments/assets/9ebf8bc0-cd12-4b58-8798-1cf6c279a778)
 
 ### Diagramme de cas d'utilisation
-./uml/UseCaseDiagram1.jpg
+<img width="443" alt="uml DMUS" src="https://github.com/user-attachments/assets/d91da0c7-c2e7-445d-9e40-ea2bf3716300" />
 
 ### Diagramme de classes
 <img width="576" alt="dm classD" src="https://github.com/user-attachments/assets/13f63d46-6b7a-4a74-9029-5027825a3505" />
